@@ -18,7 +18,7 @@ func (flags *Flags) Init() {
 	flags.Address = flag.String("address", ":8080", "IP:Port to host api container.")
 	flags.Uniquekey = flag.String("key", "", "Used to idnetify witch type of container.")
 	flags.Image = flag.String("image", "", "Container image url.")
-	flags.Debug = flag.Bool("debug", false, "Debug mode")
+	flags.Debug = flag.Bool("debug", false, "Debug mode.")
 	flag.Parse()
 	if *flags.Namespace == "" {
 		log.Fatal("Not specified Namespace")
