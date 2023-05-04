@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/docheio/container-api/handler"
 	"github.com/docheio/container-api/utils"
 	"github.com/gin-gonic/gin"
 )
@@ -15,5 +16,4 @@ func main() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	
 }
