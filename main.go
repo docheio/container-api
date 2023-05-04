@@ -16,4 +16,11 @@ func main() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
+	handler := handler.Config{
+		Uniquekey: flags.Uniquekey,
+		Namepsace: flags.Namespace,
+		Image:     flags.Image,
+	}
+
+	handler.Init()
 }
