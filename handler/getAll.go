@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"encoding/json"
-	"net/http"
 	"regexp"
 	"strconv"
 
@@ -14,35 +13,21 @@ import (
 
 func (config *Config) GetAll(gc *gin.Context) {
 	var res handshake.Response
-	var volumeLink [][]handshake.Volume
+	var volumesList [][]handshake.Volume
 	var option metav1.ListOptions
 
-	gc.Writer.Header().Set("Content-Type", "application/json;charset=UTF-8")
 	res = handshake.Response{}
-	volumeLink = [][]handshake.Volume{}
-	option = metav1.ListOptions{
-		LabelSelector: "uniquekey=" + *config.Uniquekey,
-	}
+	volumesList = [][]handshake.Volume{}
+	option = metav1.ListOptions{}
+	option.LabelSelector = "uniquekey=" + *config.Uniquekey
 
 	pods, err := config.clientSet.CoreV1().Pods(*config.Namepsace).List(context.TODO(), option)
-	if err != nil {
-		gc.Writer.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(gc.Writer).Encode(res)
-	}
+	config.checkInternalServerError(gc, err)
 	svcs, err := config.clientSet.CoreV1().Services(*config.Namepsace).List(context.TODO(), option)
-	if err != nil {
-		if err != nil {
-			gc.Writer.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(gc.Writer).Encode(res)
-		}
-	}
+	config.checkInternalServerError(gc, err)
 	pvcs, err := config.clientSet.CoreV1().PersistentVolumeClaims(*config.Namepsace).List(context.TODO(), option)
-	if err != nil {
-		if err != nil {
-			gc.Writer.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(gc.Writer).Encode(res)
-		}
-	}
+	config.checkInternalServerError(gc, err)
+
 	for _, pod := range pods.Items {
 		if label := pod.Labels["app"]; label != "" {
 			volumes := []handshake.Volume{}
@@ -66,7 +51,7 @@ func (config *Config) GetAll(gc *gin.Context) {
 					}
 				}
 			}
-			volumeLink = append(volumeLink, volumes)
+			volumesList = append(volumesList, volumes)
 		}
 	}
 	for _, svc := range svcs.Items {
@@ -86,7 +71,7 @@ func (config *Config) GetAll(gc *gin.Context) {
 	}
 	for _, pvc := range pvcs.Items {
 		if label := pvc.Labels["app"]; label != "" {
-			for num, volumes := range volumeLink {
+			for num, volumes := range volumesList {
 				for _, volume := range volumes {
 					reg := regexp.MustCompile("[1-9][0-9]*")
 					match := reg.FindString(pvc.Status.Capacity.Storage().String())
@@ -101,5 +86,7 @@ func (config *Config) GetAll(gc *gin.Context) {
 			}
 		}
 	}
+
+	gc.Writer.Header().Set("Content-Type", "application/json;charset=UTF-8")
 	json.NewEncoder(gc.Writer).Encode(res)
 }
