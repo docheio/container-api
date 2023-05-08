@@ -7,18 +7,25 @@ import (
 	handlerv1 "github.com/docheio/container-api/handler/v1"
 	"github.com/docheio/container-api/handshake"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func (config *Config) GetAll(gc *gin.Context) {
+func (config *Config) GetOne(gc *gin.Context) {
 	var res handshake.Response
 	var volumesList [][]handshake.Volume
 	var option metav1.ListOptions
+	var id string
+
+	if id = gc.Param("id"); id == "" {
+		config.checkInternalServerError(gc, errors.New("Not specified Id"))
+		return
+	}
 
 	res = handshake.Response{}
 	volumesList = [][]handshake.Volume{}
 	option = metav1.ListOptions{}
-	option.LabelSelector = "uniquekey=" + *config.Uniquekey
+	option.LabelSelector = "uniquekey=" + *config.Uniquekey + ",app=" + id
 
 	pods, err := config.clientSet.CoreV1().Pods(*config.Namepsace).List(context.TODO(), option)
 	config.checkInternalServerError(gc, err)

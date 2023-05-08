@@ -8,7 +8,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-func GetPvc(pvcs *corev1.PersistentVolumeClaimList, response *handshake.Response, volumesList *[][]handshake.Volume) {
+func FetchPvc(pvcs *corev1.PersistentVolumeClaimList, response *handshake.Response, volumesList *[][]handshake.Volume) {
 	for _, pvc := range pvcs.Items {
 		if label := pvc.Labels["app"]; label != "" {
 			for num, volumes := range *volumesList {

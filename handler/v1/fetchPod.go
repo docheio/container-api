@@ -5,7 +5,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-func GetPod(pods *corev1.PodList, response *handshake.Response, volumesList *[][]handshake.Volume) {
+func FetchPod(pods *corev1.PodList, response *handshake.Response, volumesList *[][]handshake.Volume) {
 	for _, pod := range pods.Items {
 		if label := pod.Labels["app"]; label != "" {
 			volumes := []handshake.Volume{}

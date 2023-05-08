@@ -5,7 +5,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-func GetSvc(svcs *corev1.ServiceList, response *handshake.Response, volumesList *[][]handshake.Volume) {
+func FetchSvc(svcs *corev1.ServiceList, response *handshake.Response, volumesList *[][]handshake.Volume) {
 	for _, svc := range svcs.Items {
 		if label := svc.Labels["app"]; label != "" {
 			for num, res_ := range *response {
