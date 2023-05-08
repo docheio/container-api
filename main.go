@@ -7,7 +7,11 @@ import (
 )
 
 func main() {
-	flags := utils.Flags{}
+	var flags utils.Flags
+	var router *gin.Engine
+	var v1 *gin.RouterGroup
+
+	flags = utils.Flags{}
 	flags.Init()
 
 	if *flags.Debug {
@@ -23,4 +27,8 @@ func main() {
 	}
 
 	handler.Init()
+	router = gin.Default()
+	v1 = router.Group("/v1")
+
+	v1.POST("/", handler.GetAll)
 }
