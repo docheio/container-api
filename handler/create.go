@@ -184,8 +184,50 @@ func (config *Config) Create(gc *gin.Context) {
 		}
 	}
 	{
-		if err := handlerv1.CreateSet(config.clientSet, *config.Namespace, pvcs, svcs, deploy); err != nil {
-			log.Printf("%s", err.Error())
+		var errorOccured bool
+		var errs string
+
+		errorOccured = false
+		errs = ""
+		{
+			for _, pvc := range pvcs {
+				if _, err := config.clientSet.CoreV1().PersistentVolumeClaims(*config.Namespace).Create(context.TODO(), pvc, metav1.CreateOptions{}); err != nil || errorOccured {
+					errs = errs + err.Error() + "\n"
+					errorOccured = true
+				}
+			}
+			for _, svc := range svcs {
+				if _, err := config.clientSet.CoreV1().Services(*config.Namespace).Create(context.TODO(), svc, metav1.CreateOptions{}); err != nil || errorOccured {
+					errs = errs + err.Error() + "\n"
+					errorOccured = true
+				}
+			}
+			if _, err := config.clientSet.AppsV1().Deployments(*config.Namespace).Create(context.TODO(), deploy, metav1.CreateOptions{}); err != nil || errorOccured {
+				errs = errs + err.Error() + "\n"
+				errorOccured = true
+			}
+		}
+		if errorOccured {
+			for _, pvc := range pvcs {
+				if err := config.clientSet.CoreV1().PersistentVolumeClaims(*config.Namespace).Delete(context.TODO(), pvc.Name, metav1.DeleteOptions{}); err != nil {
+					errs = errs + err.Error() + "\n"
+				}
+			}
+			for _, svc := range svcs {
+				if err := config.clientSet.CoreV1().Services(*config.Namespace).Delete(context.TODO(), svc.Name, metav1.DeleteOptions{}); err != nil {
+					errs = errs + err.Error() + "\n"
+				}
+			}
+			if err := config.clientSet.AppsV1().Deployments(*config.Namespace).Delete(context.TODO(), deploy.Name, metav1.DeleteOptions{}); err != nil {
+				errs = errs + err.Error() + "\n"
+			}
+		}
+		if errs != "" {
+			for _, str := range strings.Split(errs, "\n") {
+				if str != "" {
+					log.Println(str)
+				}
+			}
 		}
 	}
 	{
