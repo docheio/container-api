@@ -187,21 +187,21 @@ func (config *Config) Create(gc *gin.Context) {
 	{ // create
 		errorOccured := false
 		for _, pvc := range pvcs {
-			if _, err := config.clientSet.CoreV1().PersistentVolumeClaims(*config.Namespace).Create(context.TODO(), pvc, metav1.CreateOptions{}); err != nil || errorOccured == true {
+			if _, err := config.clientSet.CoreV1().PersistentVolumeClaims(*config.Namespace).Create(context.TODO(), pvc, metav1.CreateOptions{}); err != nil || errorOccured {
 				log.Printf("[Create Error] pvc     id:%v (message: %v)\n", id, err)
 				errorOccured = true
 				break
 			}
 		}
 		for _, deploy := range deploys {
-			if _, err := config.clientSet.AppsV1().Deployments(*config.Namespace).Create(context.TODO(), deploy, metav1.CreateOptions{}); err != nil || errorOccured == true {
+			if _, err := config.clientSet.AppsV1().Deployments(*config.Namespace).Create(context.TODO(), deploy, metav1.CreateOptions{}); err != nil || errorOccured {
 				log.Printf("[Create Error] deploy  id:%v (message: %v)\n", id, err)
 				errorOccured = true
 				break
 			}
 		}
 		for _, svc := range svcs {
-			if _, err := config.clientSet.CoreV1().Services(*config.Namespace).Create(context.TODO(), svc, metav1.CreateOptions{}); err != nil || errorOccured == true {
+			if _, err := config.clientSet.CoreV1().Services(*config.Namespace).Create(context.TODO(), svc, metav1.CreateOptions{}); err != nil || errorOccured {
 				log.Printf("[Create Error] service id:%v (message: %v)\n", id, err)
 				errorOccured = true
 				break
