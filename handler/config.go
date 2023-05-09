@@ -11,7 +11,7 @@ type Config struct {
 	clientSet kubernetes.Clientset
 
 	Uniquekey *string
-	Namepsace *string
+	Namespace *string
 	Image     *string
 }
 

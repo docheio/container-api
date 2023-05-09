@@ -20,12 +20,18 @@ func (config *Config) GetAll(gc *gin.Context) {
 	option = metav1.ListOptions{}
 	option.LabelSelector = "uniquekey=" + *config.Uniquekey
 
-	pods, err := config.clientSet.CoreV1().Pods(*config.Namepsace).List(context.TODO(), option)
-	config.checkInternalServerError(gc, err)
-	svcs, err := config.clientSet.CoreV1().Services(*config.Namepsace).List(context.TODO(), option)
-	config.checkInternalServerError(gc, err)
-	pvcs, err := config.clientSet.CoreV1().PersistentVolumeClaims(*config.Namepsace).List(context.TODO(), option)
-	config.checkInternalServerError(gc, err)
+	pods, err := config.clientSet.CoreV1().Pods(*config.Namespace).List(context.TODO(), option)
+	if e := config.checkInternalServerError(gc, err); e {
+		return
+	}
+	svcs, err := config.clientSet.CoreV1().Services(*config.Namespace).List(context.TODO(), option)
+	if e := config.checkInternalServerError(gc, err); e {
+		return
+	}
+	pvcs, err := config.clientSet.CoreV1().PersistentVolumeClaims(*config.Namespace).List(context.TODO(), option)
+	if e := config.checkInternalServerError(gc, err); e {
+		return
+	}
 
 	handlerv1.FetchPod(pods, &res, &volumesList)
 	handlerv1.FetchSvc(svcs, &res, &volumesList)
