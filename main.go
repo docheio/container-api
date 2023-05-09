@@ -22,7 +22,7 @@ func main() {
 
 	handler := handler.Config{
 		Uniquekey: flags.Uniquekey,
-		Namepsace: flags.Namespace,
+		Namespace: flags.Namespace,
 		Image:     flags.Image,
 	}
 
@@ -31,5 +31,7 @@ func main() {
 	v1 = router.Group("/v1")
 
 	v1.GET("/", handler.GetAll)
+	v1.GET("/:id", handler.GetOne)
+	v1.POST("/", handler.Create)
 	router.Run(*flags.Address)
 }

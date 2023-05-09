@@ -20,14 +20,12 @@ import (
 	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
-// This function handles create vpc request
-
 func (config *Config) Create(gc *gin.Context) {
 	var request handshake.Request
 	var requestBody []byte
 	var svcs []*apiv1.Service
 	var pvcs []*apiv1.PersistentVolumeClaim
-	var deploys []*appsv1.Deployment
+	var deploy *appsv1.Deployment
 	var id string
 	var cpu string
 	var mem string
@@ -37,8 +35,8 @@ func (config *Config) Create(gc *gin.Context) {
 	var volumeMounts []apiv1.VolumeMount
 
 	request = handshake.Request{}
-	ctrPort = []apiv1.ContainerPort{}
 	svcPort = []apiv1.ServicePort{}
+	ctrPort = []apiv1.ContainerPort{}
 	volumes = []apiv1.Volume{}
 	volumeMounts = []apiv1.VolumeMount{}
 	requestBody = make([]byte, gc.Request.ContentLength)
@@ -75,6 +73,8 @@ func (config *Config) Create(gc *gin.Context) {
 				ContainerPort: int32(port.Internal),
 			})
 		}
+	}
+	{
 		svcs = append(svcs, &apiv1.Service{
 			ObjectMeta: metav1.ObjectMeta{
 				Name: id,
@@ -92,7 +92,7 @@ func (config *Config) Create(gc *gin.Context) {
 			},
 		})
 	}
-	{ // Store object PersistentVOlumeClaims
+	{
 		paths := []string{}
 		for num, rpvc := range request.Pvcs {
 			enable := true
@@ -136,8 +136,8 @@ func (config *Config) Create(gc *gin.Context) {
 			}
 		}
 	}
-	{ // Store object Deployments
-		deploys = append(deploys, &appsv1.Deployment{
+	{
+		deploy = &appsv1.Deployment{
 			ObjectMeta: metav1.ObjectMeta{
 				Name: id,
 				Labels: map[string]string{
@@ -181,49 +181,11 @@ func (config *Config) Create(gc *gin.Context) {
 					},
 				},
 			},
-		})
+		}
 	}
-
-	{ // create
-		errorOccured := false
-		for _, pvc := range pvcs {
-			if _, err := config.clientSet.CoreV1().PersistentVolumeClaims(*config.Namespace).Create(context.TODO(), pvc, metav1.CreateOptions{}); err != nil || errorOccured {
-				log.Printf("[Create Error] pvc     id:%v (message: %v)\n", id, err)
-				errorOccured = true
-				break
-			}
-		}
-		for _, deploy := range deploys {
-			if _, err := config.clientSet.AppsV1().Deployments(*config.Namespace).Create(context.TODO(), deploy, metav1.CreateOptions{}); err != nil || errorOccured {
-				log.Printf("[Create Error] deploy  id:%v (message: %v)\n", id, err)
-				errorOccured = true
-				break
-			}
-		}
-		for _, svc := range svcs {
-			if _, err := config.clientSet.CoreV1().Services(*config.Namespace).Create(context.TODO(), svc, metav1.CreateOptions{}); err != nil || errorOccured {
-				log.Printf("[Create Error] service id:%v (message: %v)\n", id, err)
-				errorOccured = true
-				break
-			}
-		}
-		if errorOccured {
-			for _, pvc := range pvcs {
-				if err := config.clientSet.CoreV1().PersistentVolumeClaims(*config.Namespace).Delete(context.TODO(), pvc.Name, metav1.DeleteOptions{}); err != nil {
-					log.Printf("[Delete Error] pvc     id:%v (message: %v)\n", id, err)
-				}
-			}
-			for _, deploy := range deploys {
-				if err := config.clientSet.AppsV1().Deployments(*config.Namespace).Delete(context.TODO(), deploy.Name, metav1.DeleteOptions{}); err != nil {
-					log.Printf("[Delete Error] deploy  id:%v (message: %v)\n", id, err)
-				}
-			}
-			for _, svc := range svcs {
-				if err := config.clientSet.CoreV1().Services(*config.Namespace).Delete(context.TODO(), svc.Name, metav1.DeleteOptions{}); err != nil {
-					log.Printf("[Delete Error] service id:%v (message: %v)\n", id, err)
-				}
-			}
-			return
+	{
+		if err := handlerv1.CreateSet(config.clientSet, *config.Namespace, pvcs, svcs, deploy); err != nil {
+			log.Printf("%s", err.Error())
 		}
 	}
 	{
