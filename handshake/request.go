@@ -1,8 +1,19 @@
 package handshake
 
+type RequestStorage struct {
+	Mount string
+	Size  uint16
+}
+
+type RequestPort struct {
+	Protocol string
+	Number   uint16
+}
+
 type Request struct {
-	Cpu   uint16 `json:"cpu"`
-	Mem   uint16 `json:"mem"`
-	Ports []Port
-	Pvcs  []Pvc
+	Id      string
+	Image   string
+	Key     string
+	Storage []RequestStorage
+	Port    []RequestPort
 }

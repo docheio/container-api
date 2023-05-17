@@ -1,11 +1,20 @@
 package handshake
 
-type IResponse struct {
-	Id     string `json:"id"`
-	Name   string `json:"name"`
-	Status string `json:"status"`
-	Ports  []Port
-	Pvcs   []Pvc
+type ResponseStorage struct {
+	Mount string
+	Size  uint16
 }
 
-type Response []IResponse
+type ResponsePort struct {
+	Protocol string
+	Number   uint16
+	Extrenal uint16
+}
+
+type Response struct {
+	Id      string
+	Image   string
+	Key     string
+	Storage []RequestStorage
+	Port    []RequestPort
+}

@@ -15,3 +15,63 @@ curl -s -X POST   127.0.0.1:8081/v1/      -d '{"cpu":1000,"mem":1000,"ports":[{"
 curl -s -X PUT    127.0.0.1:8081/v1/:name -d '{"cpu":2000,"mem":2000,"ports":[{"protocol":"UDP","internal":19132}],"pvcs":[{"id":"","mount":"/root/minecraft","size":6}]}'
 curl -s -X PUT    127.0.0.1:8081/v1/:name -d '{"cpu":2000,"mem":2000,"ports":[],"pvcs":[]}'
 ```
+
+```
+// request
+{
+  "id": "qwertyuiopas",
+  "image": "ghcr.io/docheio/container-code-server:main",
+  "key": "code-server",
+  "storage": [
+    {
+      "mount": "/root",
+      "size": "10"
+    },
+    {
+      "mount": "/bin",
+      "size": "10"
+    }
+  ],
+  "port": [
+    {
+      "protocol": "TCP",
+      "number": "65535"
+    },
+    {
+      "protocol": "UDP",
+      "number": "1"
+    }
+  ]
+}
+```
+
+```
+// response
+{
+  "id": "qwertyuiopas",
+  "image": "ghcr.io/docheio/container-code-server:main",
+  "key": "code-server",
+  "storage": [
+    {
+      "mount": "/root",
+      "size": "10"
+    },
+    {
+      "mount": "/bin",
+      "size": "10"
+    }
+  ],
+  "port": [
+    {
+      "protocol": "TCP",
+      "number": "65535",
+      "external": "65535"
+    },
+    {
+      "protocol": "UDP",
+      "number": "1",
+      "external": "1"
+    }
+  ]
+}
+```

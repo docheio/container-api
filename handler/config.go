@@ -16,13 +16,14 @@ type Config struct {
 }
 
 func (config *Config) Init() {
-	clconf, err := rest.InClusterConfig()
-	if err != nil {
-		log.Fatal(err.Error())
+	if cliconf, err := rest.InClusterConfig(); err != nil {
+		log.Fatal("Failed to load config file: %w", err)
+	} else {
+		if cliset, err := kubernetes.NewForConfig(cliconf); err != nil {
+			log.Fatal("Failed to load config file: %w", err)
+		} else {
+			config.clientSet = *cliset
+			return
+		}
 	}
-	clset, err := kubernetes.NewForConfig(clconf)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	config.clientSet = *clset
 }
