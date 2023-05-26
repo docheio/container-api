@@ -206,7 +206,7 @@ func (handler *Handler) Create(gc *gin.Context) {
 				break
 			}
 		}
-		if errorOccured == true {
+		if errorOccured {
 			for _, pvc := range pvcs {
 				if err := pvcClient.Delete(context.TODO(), pvc.Name, metav1.DeleteOptions{}); err != nil {
 					log.Printf("[Delete Error] pvc     id:%v (message: %v)\n", id, err)
