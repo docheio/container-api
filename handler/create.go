@@ -186,21 +186,21 @@ func (handler *Handler) Create(gc *gin.Context) {
 	{ // create
 		errorOccured := false
 		for _, pvc := range pvcs {
-			if _, err := pvcClient.Create(context.TODO(), pvc, metav1.CreateOptions{}); err != nil || errorOccured == true {
+			if _, err := pvcClient.Create(context.TODO(), pvc, metav1.CreateOptions{}); err != nil || errorOccured {
 				log.Printf("[Create Error] pvc     id:%v (message: %v)\n", id, err)
 				errorOccured = true
 				break
 			}
 		}
 		for _, deploy := range deploys {
-			if _, err := deployClient.Create(context.TODO(), deploy, metav1.CreateOptions{}); err != nil || errorOccured == true {
+			if _, err := deployClient.Create(context.TODO(), deploy, metav1.CreateOptions{}); err != nil || errorOccured {
 				log.Printf("[Create Error] deploy  id:%v (message: %v)\n", id, err)
 				errorOccured = true
 				break
 			}
 		}
 		for _, svc := range svcs {
-			if _, err := svcClient.Create(context.TODO(), svc, metav1.CreateOptions{}); err != nil || errorOccured == true {
+			if _, err := svcClient.Create(context.TODO(), svc, metav1.CreateOptions{}); err != nil || errorOccured {
 				log.Printf("[Create Error] service id:%v (message: %v)\n", id, err)
 				errorOccured = true
 				break
