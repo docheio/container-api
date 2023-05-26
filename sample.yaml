@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    origin: ${instance_id}
+    type: mcbe
+  name: ${instance_id}
+spec:
+  ports:
+  - name: udp19132
+    port: 19132
+    protocol: UDP
+    targetPort: 19132
+  selector:
+    origin: ${instance_id}
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    origin: ${instance_id}
+    type: mcbe
+  name: ${instance_id}-0
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: origins/v1
+kind: Deployment
+metadata:
+  labels:
+    origin: ${instance_id}
+    type: mcbe
+  name: ${instance_id}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      origin: ${instance_id}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        origin: ${instance_id}
+        type: mcbe
+    spec:
+      containers:
+      - image: docheio/minecraft-be:latest
+        imagePullPolicy: Always
+        name: ${instance_id}
+        ports:
+        - containerPort: 19132
+          name: udp19132
+          protocol: UDP
+        resources:
+          limits:
+            cpu: "1"
+            memory: 1G
+        volumeMounts:
+        - mountPath: /root/minecraft
+          name: vol-0
+      volumes:
+      - name: vol-0
+        persistentVolumeClaim:
+          claimName: ${instance_id}-0

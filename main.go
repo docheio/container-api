@@ -1,34 +1,37 @@
 package main
 
 import (
-	"github.com/docheio/container-api/handler"
-	"github.com/docheio/container-api/utils"
+	"log"
+
 	"github.com/gin-gonic/gin"
+
+	"github.com/doche-io/eureka/tree/dev/server/api/mcbe/handler"
+	"github.com/doche-io/eureka/tree/dev/server/api/mcbe/utils"
 )
 
 func main() {
-	var flag utils.Flag
-	var router *gin.Engine
-	var v1 *gin.RouterGroup
+	flags := utils.Flags{}
+	flags.Init()
 
-	flag.Init()
-	if *flag.Debug {
+	if *flags.Debug {
 		gin.SetMode(gin.DebugMode)
 	} else {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	handlerV1 := handler.Config{
-		Uniquekey: flag.Uniquekey,
-		Namespace: flag.Namespace,
-		Image:     flag.Image,
-	}
+	handler := handler.Handler{Image: "docheio/minecraft-be:latest"}
+	handler.Init()
+	handler.Namespace = *flags.Namespace
 
-	handlerV1.Init()
-	router = gin.Default()
-	v1 = router.Group("/v1")
+	router := gin.Default()
+	
+	routerV1 := router.Group("/v1")
+	routerV1.POST("/", handler.Create)
+	routerV1.GET("/", handler.GetAll)
+	routerV1.GET("/:id", handler.GetOne)
+	routerV1.PUT("/:id", handler.Update)
+	routerV1.DELETE("/:id", handler.Delete)
 
-	v1.Use(handler.Middleware)
-	v1.GET("/", handlerV1.Get)
-
+	log.Println("Server Start")
+	router.Run(*flags.Address)
 }
