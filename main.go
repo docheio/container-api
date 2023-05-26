@@ -23,6 +23,7 @@ func main() {
 	handler.Init()
 	handler.Namespace = *flags.Namespace
 	handler.Uniqekey = *flags.Uniquekey
+	handler.Image = *flags.Image
 
 	router := gin.Default()
 
@@ -34,5 +35,7 @@ func main() {
 	routerV1.DELETE("/:id", handler.Delete)
 
 	log.Println("Server Start")
-	router.Run(*flags.Address)
+	if err := router.Run(*flags.Address); err != nil {
+		log.Fatalln(err)
+	}
 }

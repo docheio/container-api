@@ -15,10 +15,11 @@ type Flags struct {
 
 func (flags *Flags) Init() {
 	flags.Namespace = flag.String("namespace", "", "Namespace to operate the container.")
-	flags.Uniquekey = flag.String("key", "", " Unique key to identify to which group the container belongs.")
+	flags.Uniquekey = flag.String("key", "", "Unique key to identify to which group the container belongs.")
 	flags.Image = flag.String("image", "", "Container image url.")
 	flags.Address = flag.String("address", ":8080", "IP:Port for hosting api.")
 	flags.Debug = flag.Bool("debug", false, "Debug mode.")
+	flag.Parse()
 	if *flags.Namespace == "" {
 		log.Fatalln("Namespace must be specified.")
 	}
@@ -28,5 +29,4 @@ func (flags *Flags) Init() {
 	if *flags.Image == "" {
 		log.Fatalln("image must be specified.")
 	}
-	flag.Parse()
 }
