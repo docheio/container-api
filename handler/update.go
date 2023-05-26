@@ -229,13 +229,13 @@ func (handler *Handler) Update(gc *gin.Context) {
 						}
 					}
 					if flag {
-						if _, err := pvcClient.Update(context.TODO(), pvc, metav1.UpdateOptions{}); err != nil || errorOccured == true {
+						if _, err := pvcClient.Update(context.TODO(), pvc, metav1.UpdateOptions{}); err != nil || errorOccured {
 							log.Printf("[Create Error] pvc     id:%v (message: %v)\n", id, err)
 							errorOccured = true
 							break
 						}
 					} else {
-						if _, err := pvcClient.Create(context.TODO(), pvc, metav1.CreateOptions{}); err != nil || errorOccured == true {
+						if _, err := pvcClient.Create(context.TODO(), pvc, metav1.CreateOptions{}); err != nil || errorOccured {
 							log.Printf("[Create Error] pvc     id:%v (message: %v)\n", id, err)
 							errorOccured = true
 							break
@@ -245,14 +245,14 @@ func (handler *Handler) Update(gc *gin.Context) {
 			}
 			for _, deploy := range deploys {
 				deploy.Spec.Replicas = utils.Int32Ptr(0)
-				if _, err := deployClient.Update(context.TODO(), deploy, metav1.UpdateOptions{}); err != nil || errorOccured == true {
+				if _, err := deployClient.Update(context.TODO(), deploy, metav1.UpdateOptions{}); err != nil || errorOccured {
 					log.Printf("[Create Error] deploy  id:%v (message: %v)\n", id, err)
 					errorOccured = true
 					break
 				}
 			}
 			for _, svc := range svcs {
-				if _, err := svcClient.Update(context.TODO(), svc, metav1.UpdateOptions{}); err != nil || errorOccured == true {
+				if _, err := svcClient.Update(context.TODO(), svc, metav1.UpdateOptions{}); err != nil || errorOccured {
 					log.Printf("[Create Error] service id:%v (message: %v)\n", id, err)
 					errorOccured = true
 					break
