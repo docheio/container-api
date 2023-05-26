@@ -259,7 +259,7 @@ func (handler *Handler) Update(gc *gin.Context) {
 				}
 			}
 			for _, pvc := range deletePvcs {
-				if err := pvcClient.Delete(context.TODO(), pvc, metav1.DeleteOptions{}); err != nil || errorOccured == true {
+				if err := pvcClient.Delete(context.TODO(), pvc, metav1.DeleteOptions{}); err != nil || errorOccured {
 					log.Printf("[Create Error] pvc     id:%v (message: %v)\n", id, err)
 					errorOccured = true
 					break
@@ -302,7 +302,7 @@ func (handler *Handler) Update(gc *gin.Context) {
 			}
 			for _, deploy := range deploys {
 				deploy.Spec.Replicas = utils.Int32Ptr(1)
-				if _, err := deployClient.Update(context.TODO(), deploy, metav1.UpdateOptions{}); err != nil || errorOccured == true {
+				if _, err := deployClient.Update(context.TODO(), deploy, metav1.UpdateOptions{}); err != nil || errorOccured {
 					log.Printf("[Create Error] deploy  id:%v (message: %v)\n", id, err)
 					errorOccured = true
 					break
