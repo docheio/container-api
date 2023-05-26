@@ -116,7 +116,7 @@ EOF
 ```
 
 ## Operate
-
+### Minecraft BE
 ```bash
 curl -s -X GET    127.0.0.1:8080/v1/
 curl -s -X DELETE 127.0.0.1:8080/v1/INSTANCE_ID
