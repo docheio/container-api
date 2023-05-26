@@ -7,10 +7,12 @@ It's suitable for small rental container services. For example, minecraft server
 
 ## Require System
 
-- kubernetes
+- kubernetes (installed by the installer)
+- cilium (installed by the installer)
 - longhorn
-- cilium
 - metallb
+
+you can install kubernetes on rockylinux9 using k8s_installer_rockylinux9.sh
 
 ## Deploy Container API
 
