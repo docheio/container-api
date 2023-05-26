@@ -12,8 +12,10 @@ It's suitable for small rental container services. For example, minecraft server
 - cilium
 - metallb
 
-## Create Resource
+## Deploy Container API
+
 ### Minecraft BE
+
 ```bash
 #!/bin/bash
 
@@ -111,4 +113,13 @@ spec:
   type: LoadBalancer
 # dont use LoadBalancer when deploying
 EOF
+```
+
+## Operate
+
+```bash
+curl -s -X GET    127.0.0.1:8081/v1/
+curl -s -X DELETE 127.0.0.1:8081/v1/INSTANCE_ID
+curl -s -X POST   -d '{"cpu":1000,"mem":1000,"ports":[{"protocol":"UDP","internal":19132}],"pvcs":[{"mount":"/root/minecraft","size":5}]}' 127.0.0.1:8081/v1/
+curl -s -X PUT    -d  '{"cpu":2000,"mem":2000,"ports":[{"protocol":"UDP","internal":19132}],"pvcs":[{"id":"","mount":"/root/minecraft","size":6}]}' 127.0.0.1:8081/v1/
 ```
