@@ -88,7 +88,7 @@ spec:
         imagePullPolicy: Always
         env:
         - name: REPO
-          value: git@github.com:docheio/container-api.git
+          value: https://github.com/docheio/container-api.git
         - name : DIR
           value: ./
         - name: BUILD
