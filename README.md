@@ -19,7 +19,7 @@ It's suitable for small rental container services. For example, minecraft server
 ```bash
 #!/bin/bash
 
-NAMESPACE=default
+NAMESPACE=ctrapi
 
 kubectl create namespace $NAMESPACE
 kubectl -n $NAMESPACE apply -f - <<EOF
