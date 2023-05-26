@@ -19,7 +19,7 @@ func (handler *Handler) GetAll(gc *gin.Context) {
 	volumeLinks := VolumeLinks{} //　pvc connection info to pod
 
 	option := metav1.ListOptions{
-		LabelSelector: handler.originLabelSelectorKey + "=mcbe",
+		LabelSelector: "uniqekey=" + handler.Uniqekey,
 	}
 
 	// get pods

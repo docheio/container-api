@@ -2,20 +2,31 @@ package utils
 
 import (
 	"flag"
+	"log"
 )
 
 type Flags struct {
-	Namespace        *string
-	Uniquekey        *string
-	Address          *string
-	LabelSelectorKey *string
-	Debug            *bool
+	Namespace *string
+	Uniquekey *string
+	Image     *string
+	Address   *string
+	Debug     *bool
 }
 
 func (flags *Flags) Init() {
-	flags.Namespace = flag.String("namespace", "eureka", "Specify the namespace in which to operate container.")
-	flags.Address = flag.String("address", ":8080", "Specify IP:Port for hosting api")
-	flags.Debug = flag.Bool("debug", false, "debug mode")
-	flags.Uniquekey = flag.String("key", "", "Specify a unique key. This is used to identify to which group the container belongse")
+	flags.Namespace = flag.String("namespace", "", "Namespace to operate the container.")
+	flags.Uniquekey = flag.String("key", "", " Unique key to identify to which group the container belongs.")
+	flags.Image = flag.String("image", "", "Container image url.")
+	flags.Address = flag.String("address", ":8080", "IP:Port for hosting api.")
+	flags.Debug = flag.Bool("debug", false, "Debug mode.")
+	if *flags.Namespace == "" {
+		log.Fatalln("Namespace must be specified.")
+	}
+	if *flags.Uniquekey == "" {
+		log.Fatalln("key must be specified.")
+	}
+	if *flags.Image == "" {
+		log.Fatalln("image must be specified.")
+	}
 	flag.Parse()
 }

@@ -6,8 +6,6 @@ import (
 )
 
 func (handler *Handler) Init() {
-	handler.originLabelSelectorKey = "origin"
-
 	config, err := rest.InClusterConfig()
 	if err != nil {
 		panic("handler/init.go:11\n" + err.Error())

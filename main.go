@@ -5,8 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/doche-io/eureka/tree/dev/server/api/mcbe/handler"
-	"github.com/doche-io/eureka/tree/dev/server/api/mcbe/utils"
+	"github.com/docheio/container-api/handler"
+	"github.com/docheio/container-api/utils"
 )
 
 func main() {
@@ -19,12 +19,13 @@ func main() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	handler := handler.Handler{Image: "docheio/minecraft-be:latest"}
+	handler := handler.Handler{}
 	handler.Init()
 	handler.Namespace = *flags.Namespace
+	handler.Uniqekey = *flags.Uniquekey
 
 	router := gin.Default()
-	
+
 	routerV1 := router.Group("/v1")
 	routerV1.POST("/", handler.Create)
 	routerV1.GET("/", handler.GetAll)

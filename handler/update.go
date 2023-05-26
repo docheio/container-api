@@ -17,7 +17,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 
-	"github.com/doche-io/eureka/tree/dev/server/api/mcbe/utils"
+	"github.com/docheio/container-api/utils"
 )
 
 func (handler *Handler) Update(gc *gin.Context) {
@@ -84,8 +84,8 @@ func (handler *Handler) Update(gc *gin.Context) {
 				ObjectMeta: metav1.ObjectMeta{
 					Name: id,
 					Labels: map[string]string{
-						"app":                          id,
-						handler.originLabelSelectorKey: "mcbe",
+						"app":      id,
+						"uniqekey": handler.Uniqekey,
 					},
 				},
 				Spec: apiv1.ServiceSpec{
@@ -99,7 +99,7 @@ func (handler *Handler) Update(gc *gin.Context) {
 		}
 		{ // Store object PersistentVOlumeClaims
 			option := metav1.ListOptions{
-				LabelSelector: handler.originLabelSelectorKey + "=mcbe,app=" + id,
+				LabelSelector: "uniqekey=" + handler.Uniqekey + ",app=" + id,
 			}
 			fpvcs, err := handler.clientSet.CoreV1().PersistentVolumeClaims(handler.Namespace).List(context.TODO(), option)
 			if err != nil {
@@ -150,8 +150,8 @@ func (handler *Handler) Update(gc *gin.Context) {
 						ObjectMeta: metav1.ObjectMeta{
 							Name: pvcName,
 							Labels: map[string]string{
-								"app":                          id,
-								handler.originLabelSelectorKey: "mcbe",
+								"app":      id,
+								"uniqekey": handler.Uniqekey,
 							},
 						},
 						Spec: apiv1.PersistentVolumeClaimSpec{
@@ -171,9 +171,9 @@ func (handler *Handler) Update(gc *gin.Context) {
 				ObjectMeta: metav1.ObjectMeta{
 					Name: id,
 					Labels: map[string]string{
-						"gen":                          utils.RFC1123(),
-						"app":                          id,
-						handler.originLabelSelectorKey: "mcbe",
+						"gen":      utils.RFC1123(),
+						"app":      id,
+						"uniqekey": handler.Uniqekey,
 					},
 				},
 				Spec: appsv1.DeploymentSpec{
@@ -189,8 +189,8 @@ func (handler *Handler) Update(gc *gin.Context) {
 					Template: apiv1.PodTemplateSpec{
 						ObjectMeta: metav1.ObjectMeta{
 							Labels: map[string]string{
-								"app":                          id,
-								handler.originLabelSelectorKey: "mcbe",
+								"app":      id,
+								"uniqekey": handler.Uniqekey,
 							},
 						},
 						Spec: apiv1.PodSpec{
@@ -219,7 +219,7 @@ func (handler *Handler) Update(gc *gin.Context) {
 			errorOccured := false
 			for _, pvc := range pvcs {
 				option := metav1.ListOptions{
-					LabelSelector: handler.originLabelSelectorKey + "=mcbe,app=" + id,
+					LabelSelector: "uniqekey=" + handler.Uniqekey + ",app=" + id,
 				}
 				if epvcs, err := handler.clientSet.CoreV1().PersistentVolumeClaims(handler.Namespace).List(context.TODO(), option); err == nil {
 					flag := false
@@ -270,7 +270,7 @@ func (handler *Handler) Update(gc *gin.Context) {
 				for {
 					count++
 					option := metav1.ListOptions{
-						LabelSelector: handler.originLabelSelectorKey + "=mcbe,app=" + id,
+						LabelSelector: "uniqekey=" + handler.Uniqekey + ",app=" + id,
 					}
 					if pods, err := handler.clientSet.CoreV1().Pods(handler.Namespace).List(context.TODO(), option); err != nil || len(pods.Items) == 0 || count == 360 {
 						if count == 360 {
@@ -312,7 +312,7 @@ func (handler *Handler) Update(gc *gin.Context) {
 
 		{ // response
 			option := metav1.ListOptions{
-				LabelSelector: handler.originLabelSelectorKey + "=mcbe,app=" + id,
+				LabelSelector: "uniqekey=" + handler.Uniqekey + ",app=" + id,
 			}
 			volumeLinks := VolumeLinks{} //　pvc connection info to pod
 

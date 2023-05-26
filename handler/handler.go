@@ -3,9 +3,8 @@ package handler
 import "k8s.io/client-go/kubernetes"
 
 type Handler struct {
-	clientSet              kubernetes.Clientset
-	originLabelSelectorKey string
-
+	clientSet kubernetes.Clientset
+	Uniqekey  string
 	Namespace string
 	Image     string
 }
