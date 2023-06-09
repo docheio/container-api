@@ -1,24 +1,3 @@
-# Container API
-
-Container API is a tool to create different instances of the same image on kubernetes.  
-It's suitable for small rental container services. For example, minecraft server or code-server.
-
-# To start using Container API
-
-## Require System
-
-- kubernetes (installed by the installer)
-- cilium (installed by the installer)
-- longhorn
-- metallb
-
-you can install kubernetes on rockylinux9 using k8s_installer_rockylinux9.sh
-
-## Deploy Container API
-
-### Minecraft BE
-
-```bash
 #!/bin/bash
 
 NAMESPACE=ctrapi
@@ -115,17 +94,3 @@ spec:
   type: LoadBalancer
 # dont use LoadBalancer when deploying
 EOF
-```
-
-## Operate
-### Minecraft BE
-```bash
-curl -s -X GET    127.0.0.1:8080/v1/
-curl -s -X DELETE 127.0.0.1:8080/v1/INSTANCE_ID
-curl -s -X POST   -d '{"cpu":1000,"mem":1000,"ports":[{"protocol":"UDP","internal":19132}],"pvcs":[{"mount":"/root/minecraft","size":5}]}' 127.0.0.1:8080/v1/
-curl -s -X PUT    -d '{"cpu":2000,"mem":2000,"ports":[{"protocol":"UDP","internal":19132}],"pvcs":[{"id":"","mount":"/root/minecraft","size":6}]}' 127.0.0.1:8080/v1/
-```
-
-# ISSUE
-- pvc had over detected.
-- support ENV.
