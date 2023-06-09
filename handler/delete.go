@@ -42,7 +42,7 @@ func (handler *Handler) Delete(gc *gin.Context) {
 		return
 	} else {
 		option := metav1.ListOptions{
-			LabelSelector: "uniqekey=" + handler.Uniqekey + ",app=" + id,
+			LabelSelector: "uniquekey=" + handler.Uniquekey + ",app=" + id,
 		}
 
 		// get pods
@@ -82,7 +82,7 @@ func (handler *Handler) Delete(gc *gin.Context) {
 
 		{ // response
 			option := metav1.ListOptions{
-				LabelSelector: "uniqekey=" + handler.Uniqekey + ",app=" + id,
+				LabelSelector: "uniquekey=" + handler.Uniquekey + ",app=" + id,
 			}
 			volumeLinks := VolumeLinks{} //　pvc connection info to pod
 

@@ -91,7 +91,7 @@ func (handler *Handler) Create(gc *gin.Context) {
 				Name: id,
 				Labels: map[string]string{
 					"app":      id,
-					"uniqekey": handler.Uniqekey,
+					"uniquekey": handler.Uniquekey,
 				},
 			},
 			Spec: apiv1.ServiceSpec{
@@ -132,7 +132,7 @@ func (handler *Handler) Create(gc *gin.Context) {
 						Name: pvcName,
 						Labels: map[string]string{
 							"app":      id,
-							"uniqekey": handler.Uniqekey,
+							"uniquekey": handler.Uniquekey,
 						},
 					},
 					Spec: apiv1.PersistentVolumeClaimSpec{
@@ -154,7 +154,7 @@ func (handler *Handler) Create(gc *gin.Context) {
 				Labels: map[string]string{
 					"gen":      utils.RFC1123(),
 					"app":      id,
-					"uniqekey": handler.Uniqekey,
+					"uniquekey": handler.Uniquekey,
 				},
 			},
 			Spec: appsv1.DeploymentSpec{
@@ -171,7 +171,7 @@ func (handler *Handler) Create(gc *gin.Context) {
 					ObjectMeta: metav1.ObjectMeta{
 						Labels: map[string]string{
 							"app":      id,
-							"uniqekey": handler.Uniqekey,
+							"uniquekey": handler.Uniquekey,
 						},
 					},
 					Spec: apiv1.PodSpec{
@@ -243,7 +243,7 @@ func (handler *Handler) Create(gc *gin.Context) {
 	}
 	{ // response
 		option := metav1.ListOptions{
-			LabelSelector: "uniqekey=" + handler.Uniqekey + ",app=" + id,
+			LabelSelector: "uniquekey=" + handler.Uniquekey + ",app=" + id,
 		}
 		volumeLinks := VolumeLinks{} //　pvc connection info to pod
 

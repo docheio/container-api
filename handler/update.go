@@ -99,7 +99,7 @@ func (handler *Handler) Update(gc *gin.Context) {
 					Name: id,
 					Labels: map[string]string{
 						"app":      id,
-						"uniqekey": handler.Uniqekey,
+						"uniquekey": handler.Uniquekey,
 					},
 				},
 				Spec: apiv1.ServiceSpec{
@@ -113,7 +113,7 @@ func (handler *Handler) Update(gc *gin.Context) {
 		}
 		{ // Store object PersistentVOlumeClaims
 			option := metav1.ListOptions{
-				LabelSelector: "uniqekey=" + handler.Uniqekey + ",app=" + id,
+				LabelSelector: "uniquekey=" + handler.Uniquekey + ",app=" + id,
 			}
 			fpvcs, err := handler.clientSet.CoreV1().PersistentVolumeClaims(handler.Namespace).List(context.TODO(), option)
 			if err != nil {
@@ -165,7 +165,7 @@ func (handler *Handler) Update(gc *gin.Context) {
 							Name: pvcName,
 							Labels: map[string]string{
 								"app":      id,
-								"uniqekey": handler.Uniqekey,
+								"uniquekey": handler.Uniquekey,
 							},
 						},
 						Spec: apiv1.PersistentVolumeClaimSpec{
@@ -187,7 +187,7 @@ func (handler *Handler) Update(gc *gin.Context) {
 					Labels: map[string]string{
 						"gen":      utils.RFC1123(),
 						"app":      id,
-						"uniqekey": handler.Uniqekey,
+						"uniquekey": handler.Uniquekey,
 					},
 				},
 				Spec: appsv1.DeploymentSpec{
@@ -204,7 +204,7 @@ func (handler *Handler) Update(gc *gin.Context) {
 						ObjectMeta: metav1.ObjectMeta{
 							Labels: map[string]string{
 								"app":      id,
-								"uniqekey": handler.Uniqekey,
+								"uniquekey": handler.Uniquekey,
 							},
 						},
 						Spec: apiv1.PodSpec{
@@ -233,7 +233,7 @@ func (handler *Handler) Update(gc *gin.Context) {
 			errorOccured := false
 			for _, pvc := range pvcs {
 				option := metav1.ListOptions{
-					LabelSelector: "uniqekey=" + handler.Uniqekey + ",app=" + id,
+					LabelSelector: "uniquekey=" + handler.Uniquekey + ",app=" + id,
 				}
 				if epvcs, err := handler.clientSet.CoreV1().PersistentVolumeClaims(handler.Namespace).List(context.TODO(), option); err == nil {
 					flag := false
@@ -284,7 +284,7 @@ func (handler *Handler) Update(gc *gin.Context) {
 				for {
 					count++
 					option := metav1.ListOptions{
-						LabelSelector: "uniqekey=" + handler.Uniqekey + ",app=" + id,
+						LabelSelector: "uniquekey=" + handler.Uniquekey + ",app=" + id,
 					}
 					if pods, err := handler.clientSet.CoreV1().Pods(handler.Namespace).List(context.TODO(), option); err != nil || len(pods.Items) == 0 || count == 360 {
 						if count == 360 {
@@ -326,7 +326,7 @@ func (handler *Handler) Update(gc *gin.Context) {
 
 		{ // response
 			option := metav1.ListOptions{
-				LabelSelector: "uniqekey=" + handler.Uniqekey + ",app=" + id,
+				LabelSelector: "uniquekey=" + handler.Uniquekey + ",app=" + id,
 			}
 			volumeLinks := VolumeLinks{} //　pvc connection info to pod
 

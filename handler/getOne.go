@@ -37,7 +37,7 @@ func (handler *Handler) GetOne(gc *gin.Context) {
 		return
 	} else {
 		option := metav1.ListOptions{
-			LabelSelector: "uniqekey=" + handler.Uniqekey + ",app=" + id,
+			LabelSelector: "uniquekey=" + handler.Uniquekey + ",app=" + id,
 		}
 
 		// get pods

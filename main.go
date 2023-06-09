@@ -34,7 +34,7 @@ func main() {
 	handler := handler.Handler{}
 	handler.Init()
 	handler.Namespace = *flags.Namespace
-	handler.Uniqekey = *flags.Uniquekey
+	handler.Uniquekey = *flags.Uniquekey
 	handler.Image = *flags.Image
 
 	router := gin.Default()
