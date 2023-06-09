@@ -58,7 +58,6 @@ func (handler *Handler) Update(gc *gin.Context) {
 	var deploys []*appsv1.Deployment
 
 	deletePvcs := []string{}
-	ipvcs := []IPvc{}
 
 	cpu := strconv.FormatUint(uint64(request.Cpu), 10) + "m"
 	mem := strconv.FormatUint(uint64(request.Mem), 10) + "M"
@@ -135,7 +134,6 @@ func (handler *Handler) Update(gc *gin.Context) {
 				if rpvc.Id == "" {
 					rpvc.Id = id + "-" + utils.RFC1123()
 				}
-				ipvcs = append(ipvcs, rpvc)
 			}
 			paths := []string{}
 			for num, rpvc := range request.Pvcs {
