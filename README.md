@@ -127,5 +127,4 @@ curl -s -X PUT    -d '{"cpu":2000,"mem":2000,"ports":[{"protocol":"UDP","interna
 ```
 
 # ISSUE
-- pvc had over detected.
 - support ENV.
