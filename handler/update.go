@@ -297,10 +297,10 @@ func (handler *Handler) Update(gc *gin.Context) {
 			{
 				for _, volume := range volumes {
 					count := 0
-					if pvc, err := handler.clientSet.CoreV1().PersistentVolumeClaims(handler.Namespace).Get(context.TODO(), volume.Name, metav1.GetOptions{}); err != nil {
+					if _, err := handler.clientSet.CoreV1().PersistentVolumeClaims(handler.Namespace).Get(context.TODO(), volume.Name, metav1.GetOptions{}); err != nil {
 						for {
 							count++
-							pvc, _ = handler.clientSet.CoreV1().PersistentVolumeClaims(handler.Namespace).Get(context.TODO(), volume.Name, metav1.GetOptions{})
+							pvc, _ := handler.clientSet.CoreV1().PersistentVolumeClaims(handler.Namespace).Get(context.TODO(), volume.Name, metav1.GetOptions{})
 							if pvc.Spec.Resources.Requests.Storage().String() == pvc.Status.Capacity.Storage().String() {
 								break
 							}
