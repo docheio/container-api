@@ -106,7 +106,7 @@ func (handler *Handler) GetAll(gc *gin.Context) {
 				for _, volumeLink := range volumeLinkGroup {
 					reg := regexp.MustCompile("[1-9][0-9]*")
 					match := reg.FindString(pvc.Status.Capacity.Storage().String())
-					if ui64, err := strconv.ParseUint(match, 10, 64); err == nil {
+					if ui64, err := strconv.ParseUint(match, 10, 64); err == nil && volumeLink.Claim == pvc.Name {
 						response[num].Pvcs = append(response[num].Pvcs, IPvc{
 							Id:    pvc.Name,
 							Mount: volumeLink.Mount,
