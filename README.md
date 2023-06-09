@@ -96,7 +96,7 @@ spec:
         - name: BUILD
           value: "true"
         - name: BUILD_START_COMMAND
-          value: "go build -o ./ctrapi && ./ctrapi --namespace ctrapi --key mcbe --image \"docheio/minecraft-be\""
+          value: "go build -o ./ctrapi && ./ctrapi --namespace $NAMESPACE --key mcbe --image \"docheio/minecraft-be\""
         ports:
         - name: tcp8080
           containerPort: 8080
