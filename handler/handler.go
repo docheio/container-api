@@ -20,8 +20,3 @@ type Handler struct {
 	Namespace string
 	Image     string
 }
-
-type PersistentVolumeClaimLink struct {
-	claimName string
-	mountPath string
-}
