@@ -97,7 +97,7 @@ func (handler *Handler) Update(gc *gin.Context) {
 				ObjectMeta: metav1.ObjectMeta{
 					Name: id,
 					Labels: map[string]string{
-						"app":      id,
+						"app":       id,
 						"uniquekey": handler.Uniquekey,
 					},
 				},
@@ -162,7 +162,7 @@ func (handler *Handler) Update(gc *gin.Context) {
 						ObjectMeta: metav1.ObjectMeta{
 							Name: pvcName,
 							Labels: map[string]string{
-								"app":      id,
+								"app":       id,
 								"uniquekey": handler.Uniquekey,
 							},
 						},
@@ -183,8 +183,8 @@ func (handler *Handler) Update(gc *gin.Context) {
 				ObjectMeta: metav1.ObjectMeta{
 					Name: id,
 					Labels: map[string]string{
-						"gen":      utils.RFC1123(),
-						"app":      id,
+						"gen":       utils.RFC1123(),
+						"app":       id,
 						"uniquekey": handler.Uniquekey,
 					},
 				},
@@ -201,7 +201,7 @@ func (handler *Handler) Update(gc *gin.Context) {
 					Template: apiv1.PodTemplateSpec{
 						ObjectMeta: metav1.ObjectMeta{
 							Labels: map[string]string{
-								"app":      id,
+								"app":       id,
 								"uniquekey": handler.Uniquekey,
 							},
 						},

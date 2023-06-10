@@ -16,7 +16,7 @@ import "k8s.io/client-go/kubernetes"
 
 type Handler struct {
 	clientSet kubernetes.Clientset
-	Uniquekey  string
+	Uniquekey string
 	Namespace string
 	Image     string
 }
