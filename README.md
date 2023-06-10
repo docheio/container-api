@@ -86,17 +86,7 @@ spec:
       automountServiceAccountToken: true
       containers:
       - name: ctrapi
-        image: docheio/git-runner-go:1.0
-        imagePullPolicy: Always
-        env:
-        - name: REPO
-          value: https://github.com/docheio/container-api.git
-        - name : DIR
-          value: ./
-        - name: BUILD
-          value: "true"
-        - name: BUILD_START_COMMAND
-          value: "go build -o ./ctrapi && ./ctrapi --namespace $NAMESPACE --key mcbe --image \"docheio/minecraft-be\""
+        image: ghcr.io/docheio/container-api:1.0.0
         ports:
         - name: tcp8080
           containerPort: 8080
