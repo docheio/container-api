@@ -31,7 +31,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Checkout
-      run: git checkout 7250a8df2d3bde0a1efd550d7c0db9f1c7808e93
+      run: git switch -d 7250a8df2d3bde0a1efd550d7c0db9f1c7808e93
 
     - name: Extract metadata (tags, labels) for Container
       id: meta
