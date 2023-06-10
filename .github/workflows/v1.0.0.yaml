@@ -37,7 +37,7 @@ jobs:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
     - name: Checkout
-      run: git checkout 7250a8d
+      run: ls -la
 
     - name: Build and Push Container Images
       uses: docker/build-push-action@v4
