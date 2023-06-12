@@ -87,6 +87,13 @@ spec:
       containers:
       - name: ctrapi
         image: ghcr.io/docheio/container-api:1.0.0
+        env:
+        - name: NAMESPACE
+          value: eureka
+        - name: UNIQEKEY
+          value: mcbe
+        - name: IMAGE
+          value: docheio/minecraft-be:latest
         ports:
         - name: tcp8080
           containerPort: 8080
