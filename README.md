@@ -89,7 +89,7 @@ spec:
         image: ghcr.io/docheio/container-api:1.0.0
         env:
         - name: NAMESPACE
-          value: eureka
+          value: ctrapi
         - name: UNIQEKEY
           value: mcbe
         - name: IMAGE
