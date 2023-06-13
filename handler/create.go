@@ -333,6 +333,11 @@ func (handler *Handler) Create(gc *gin.Context) {
 			}
 		}
 
+		if len(response) == 0 {
+			response = append(response, IResponse{
+				Id: id,
+			})
+		}
 		json.NewEncoder(gc.Writer).Encode(response)
 	}
 }
