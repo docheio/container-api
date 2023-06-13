@@ -44,5 +44,5 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ghcr.io/docheio/container-api:1.0.0
+        tags: ghcr.io/docheio/container-api:1.0.1
         labels: ${{ steps.meta.outputs.labels }}
