@@ -25,5 +25,5 @@ WORKDIR /root/container-api
 RUN go build -o /root/ctrapi
 
 WORKDIR /root
-RUN rm -rf container-api-v1.0.1.tar.gz ./container-api
+RUN rm -rf ./container-api*
 CMD ./ctrapi --namespace ${NAMESPACE} --key ${UNIQUEKEY} --image "${IMAGE}"
