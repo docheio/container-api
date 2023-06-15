@@ -17,9 +17,10 @@ RUN pacman -S --noconfirm curl
 RUN pacman -S --noconfirm tar
 
 WORKDIR /root
-RUN curl -sLO https://github.com/docheio/container-api/releases/download/v1.0.2/container-api-v1.0.2.tar.gz
-RUN tar zxfp ./container-api-v1.0.2.tar.gz
+RUN curl -sLO https://github.com/docheio/container-api/archive/refs/tags/v1.0.2.tar.gz
+RUN tar zxfp ./v1.0.2.tar.gz
 
+RUN mv /root/container-api* /root/container-api
 WORKDIR /root/container-api
 RUN go build -o /root/ctrapi
 
