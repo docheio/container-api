@@ -181,6 +181,10 @@ func (handler *Handler) Create(gc *gin.Context) {
 								Image: handler.Image,
 								Ports: ctrPort,
 								Resources: apiv1.ResourceRequirements{
+									Requests: apiv1.ResourceList{
+										"cpu":    resource.MustParse(strconv.FormatUint(100, 10) + "m"),
+										"memory":  resource.MustParse(strconv.FormatUint(100, 10) + "M"),
+									},
 									Limits: apiv1.ResourceList{
 										"cpu":    resource.MustParse(cpu),
 										"memory": resource.MustParse(mem),
