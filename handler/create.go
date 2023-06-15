@@ -337,9 +337,10 @@ func (handler *Handler) Create(gc *gin.Context) {
 			}
 		}
 
-		if len(response) == 0 {
+		if len(pods.Items) == 0 {
 			response = append(response, IResponse{
 				Id: id,
+				Status: "Pending",
 			})
 		}
 		json.NewEncoder(gc.Writer).Encode(response)
