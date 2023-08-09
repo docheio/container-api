@@ -1,3 +1,15 @@
+# ************************************************************************************************************ #
+#                                                                                                              #
+#                                                      :::::::::  ::::::::   ::::::::   :::    ::: ::::::::::  #
+#  k8s_installer_rockylinux9.sh                       :+:    :+: :+:    :+: :+:    :+: :+:    :+: :+:          #
+#                                                    +:+    +:+ +:+    +:+ +:+        +:+    +:+ +:+           #
+#  By: ES-Yukun <yukun@doche.io>                    +#+    +:+ +#+    +:+ +#+        +#++:++#++ +#++:++#       #
+#                                                  +#+    +#+ +#+    +#+ +#+        +#+    +#+ +#+             #
+#  Created: 2023/08/09 23:49:03 by ES-Yukun       #+#    #+# #+#    #+# #+#    #+# #+#    #+# #+#              #
+#  Updated: 2023/08/09 23:49:28 by ES-Yukun      #########  ########   ########  ###    ### ##########.io.     #
+#                                                                                                              #
+# ************************************************************************************************************ #
+
 #!/bin/bash
 cat /etc/fstab | sed /swap/d | tee /etc/fstab
 swapoff -a
@@ -83,5 +95,4 @@ chown $(id -u):$(id -g) $HOME/.kube/config
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 helm repo add cilium https://helm.cilium.io/
 sleep 10
-helm install cilium cilium/cilium \
-    --namespace kube-system
+helm install cilium cilium/cilium --namespace kube-system
